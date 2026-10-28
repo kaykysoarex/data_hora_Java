@@ -1,4 +1,4 @@
-# Estudos Java: Operações com Data-Hora (Instanciação e Formatação)
+# Estudos Java: Operações com Data-Hora
 
 Anotações da aula sobre **operações importantes com data-hora** do módulo *Trabalhando com data-hora*, do curso de Programação Orientada a Objetos com Java, do professor Nélio Alves (DevSuperior).
 
@@ -6,16 +6,20 @@ Anotações da aula sobre **operações importantes com data-hora** do módulo *
 
 ### Visão geral
 
-| Operação         | Entrada                      | Saída                        |
-| ---------------- | ---------------------------- | ---------------------------- |
-| **Instanciação** | agora                        | data-hora                    |
-| **Instanciação** | texto ISO 8601               | data-hora                    |
-| **Instanciação** | texto em formato customizado | data-hora                    |
-| **Instanciação** | dia, mês, ano, [horário]     | data-hora local              |
-| **Formatação**   | data-hora                    | texto ISO 8601               |
-| **Formatação**   | data-hora                    | texto em formato customizado |
+| Operação         | Entrada                                     | Saída                        |
+| ---------------- | ------------------------------------------- | ---------------------------- |
+| **Instanciação** | agora                                       | data-hora                    |
+| **Instanciação** | texto ISO 8601                              | data-hora                    |
+| **Instanciação** | texto em formato customizado                | data-hora                    |
+| **Instanciação** | dia, mês, ano, [horário]                    | data-hora local              |
+| **Formatação**   | data-hora                                   | texto ISO 8601               |
+| **Formatação**   | data-hora                                   | texto em formato customizado |
+| **Obter dados**  | data-hora local                             | dia, mês, ano, horário       |
+| **Converter**    | data-hora global + timezone (sistema local) | data-hora local              |
+| **Cálculo**      | data-hora ± tempo                           | data-hora                    |
+| **Cálculo**      | data-hora 1 e data-hora 2                   | duração                      |
 
-**Instanciar** é criar o objeto de data-hora. **Formatar** é transformar o objeto em texto.
+**Instanciar** é criar o objeto de data-hora. **Formatar** é transformar o objeto em texto. **Converter** muda o fuso em que um momento é visto. **Calcular** soma, subtrai ou mede o tempo entre data-horas.
 
 ### Tipos usados
 
@@ -25,6 +29,9 @@ Anotações da aula sobre **operações importantes com data-hora** do módulo *
 | `LocalDateTime`     | Data e hora locais (sem fuso)                      |
 | `Instant`           | Momento exato global (UTC)                         |
 | `DateTimeFormatter` | Define o formato do texto, na leitura e na escrita |
+| `ZoneId`            | Timezone (por exemplo, `America/Sao_Paulo`)        |
+| `Duration`          | Tempo decorrido entre duas data-horas              |
+| `ChronoUnit`        | Unidades de tempo (dias, horas, minutos...)        |
 
 ## 💻 Instanciação
 
@@ -120,6 +127,101 @@ System.out.println(fmtUtc.format(d06));              // 20/07/2022 01:30
 | `mm`   | Minutos            | `30`       |
 | `ss`   | Segundos           | `26`       |
 
+## 💻 Obter dados de uma data-hora local
+
+Data-hora local para dia, mês, ano e horário:
+
+```java
+LocalDate d = LocalDate.parse("2022-07-20");
+
+System.out.println(d.getDayOfMonth());               // 20
+System.out.println(d.getMonthValue());               // 7
+System.out.println(d.getYear());                     // 2022
+System.out.println(d.getDayOfWeek());                // WEDNESDAY
+
+LocalDateTime dt = LocalDateTime.parse("2022-07-20T01:30:26");
+
+System.out.println(dt.getHour());                    // 1
+System.out.println(dt.getMinute());                  // 30
+System.out.println(dt.getSecond());                  // 26
+```
+
+`getMonthValue()` devolve o número do mês. `getMonth()` e `getDayOfWeek()` devolvem enums (`JULY`, `WEDNESDAY`).
+
+## 💻 Converter data-hora global para local
+
+Usa-se o `Instant` (global) e uma timezone (`ZoneId`). Se o objetivo for o fuso do computador, usa-se o fuso do sistema.
+
+```java
+Instant momento = Instant.parse("2022-07-20T01:30:26Z");
+
+// Fuso do sistema local
+LocalDateTime local = LocalDateTime.ofInstant(momento, ZoneId.systemDefault());
+
+// Fusos específicos
+LocalDateTime saoPaulo = LocalDateTime.ofInstant(momento, ZoneId.of("America/Sao_Paulo"));
+LocalDateTime lisboa = LocalDateTime.ofInstant(momento, ZoneId.of("Europe/Lisbon"));
+
+System.out.println(saoPaulo);                        // 2022-07-19T22:30:26
+System.out.println(lisboa);                          // 2022-07-20T02:30:26
+
+// Só a data (LocalDate.ofInstant existe a partir do Java 9)
+LocalDate dataSp = LocalDate.ofInstant(momento, ZoneId.of("America/Sao_Paulo"));
+System.out.println(dataSp);                          // 2022-07-19
+```
+
+Repare que o mesmo instante caiu em **dias diferentes** em São Paulo (19) e em Lisboa (20). Por isso o fuso importa.
+
+Para ver os nomes de timezone disponíveis:
+
+```java
+for (String zona : ZoneId.getAvailableZoneIds()) {
+    System.out.println(zona);
+}
+```
+
+## 💻 Cálculos com data-hora
+
+### Data-hora ± tempo
+
+```java
+LocalDate hoje = LocalDate.parse("2022-07-20");
+
+LocalDate semanaPassada = hoje.minusDays(7);         // 2022-07-13
+LocalDate proximaSemana = hoje.plusDays(7);          // 2022-07-27
+LocalDate daquiA2Meses = hoje.plusMonths(2);         // 2022-09-20
+
+LocalDateTime dt = LocalDateTime.parse("2022-07-20T01:30:26");
+LocalDateTime maisTarde = dt.plusHours(5);           // 2022-07-20T06:30:26
+
+// Com Instant, use ChronoUnit
+Instant agora = Instant.parse("2022-07-20T01:30:26Z");
+Instant daquiA7Dias = agora.plus(7, ChronoUnit.DAYS);       // 2022-07-27T01:30:26Z
+Instant ha7Dias = agora.minus(7, ChronoUnit.DAYS);          // 2022-07-13T01:30:26Z
+```
+
+### Duas data-horas para duração
+
+```java
+// Com LocalDate: converta para data-hora com atStartOfDay()
+Duration t1 = Duration.between(semanaPassada.atStartOfDay(), hoje.atStartOfDay());
+System.out.println(t1.toDays());                     // 7
+System.out.println(t1.toHours());                    // 168
+
+// Com LocalDateTime e Instant: direto
+Duration t2 = Duration.between(dt, maisTarde);
+System.out.println(t2.toHours());                    // 5
+
+Duration t3 = Duration.between(agora, daquiA7Dias);
+System.out.println(t3.toDays());                     // 7
+
+// Ordem invertida resulta em duração negativa
+Duration t4 = Duration.between(daquiA7Dias, agora);
+System.out.println(t4.toDays());                     // -7
+```
+
+`Duration` mede tempo em horas, minutos e segundos, e o `toString()` segue o ISO 8601: `t1` aparece como `PT168H`.
+
 ## ⚠️ Pontos de atenção
 
 - **`MM` x `mm`:** maiúsculo é mês, minúsculo é minuto. Trocar gera datas erradas sem avisar.
@@ -129,16 +231,14 @@ System.out.println(fmtUtc.format(d06));              // 20/07/2022 01:30
 - Datas inexistentes, como `LocalDate.of(2022, 2, 30)`, lançam `DateTimeException`.
 - Formatar um `Instant` sem informar o fuso lança `UnsupportedTemporalTypeException`.
 - `LocalDate` não tem hora: passar um texto com hora para `LocalDate.parse` também dá erro.
-
-## ➡️ Próximas operações do módulo
-
-- Converter data-hora global para local.
-- Obter dados de uma data-hora local (dia, mês, ano, horário).
-- Cálculos com data-hora (somar e subtrair tempo, calcular duração).
+- `Duration.between` com `LocalDate` lança `UnsupportedTemporalTypeException`, porque falta a hora. Use `atStartOfDay()`.
+- `Instant.plus(1, ChronoUnit.MONTHS)` também lança `UnsupportedTemporalTypeException`: o `Instant` aceita unidades de tempo fixo (como dias e horas), mas não meses ou anos.
+- Na conversão para local, o **fuso muda o resultado**, inclusive o dia. Defina sempre qual fuso está usando.
+- `Duration.between(a, b)` fica negativa se `b` for anterior a `a`.
 
 ## 🎯 Objetivo
 
-Criar objetos de data-hora a partir de diferentes entradas e transformá-los em texto no formato desejado, entendendo quando usar o padrão ISO 8601 e quando usar um formato customizado.
+Criar objetos de data-hora a partir de diferentes entradas, transformá-los em texto no formato desejado, extrair seus dados, converter momentos globais para o horário local e fazer cálculos com datas, entendendo quando usar o padrão ISO 8601 e quando usar um formato customizado.
 
 ## 🛠️ Tecnologias
 
