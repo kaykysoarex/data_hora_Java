@@ -22,7 +22,7 @@ public class Main {
         LocalDate d04 = LocalDate.parse("2022-07-20");
         LocalDateTime d05 = LocalDateTime.parse("2022-07-20T01:30:26");
         Instant d06 = Instant.parse("2022-07-20T01:30:26Z"); // "Z" = UTC
-        Instant d07 = Instant.parse("2022-07-20T01:30:26-03:00"); // ⚠️ lança exceção (veja nota abaixo)
+        Instant d07 = Instant.parse("2022-07-20T01:30:26-03:00"); //  lança exceção (veja nota abaixo)
 
         // parse com formatador: converte texto em formato personalizado
         LocalDate d08 = LocalDate.parse("20/07/2022", fmt1);
