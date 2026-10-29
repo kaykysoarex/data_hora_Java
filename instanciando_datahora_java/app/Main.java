@@ -33,7 +33,7 @@ public class Main {
         LocalDateTime d11 = LocalDateTime.of(2022, 07, 20, 1, 30);
 
         // toString: converte o objeto em texto (padrão ISO 8601)
-        System.out.println("d01 = " + d01.toString());
+        /*  System.out.println("d01 = " + d01.toString());
         System.out.println("d02 = " + d02.toString());
         System.out.println("d03 = " + d03.toString());
         System.out.println("d04 = " + d04.toString());
@@ -43,6 +43,12 @@ public class Main {
         System.out.println("d08 = " + d08.toString());
         System.out.println("d09 = " + d09.toString());
         System.out.println("d10 = " + d10.toString());
-        System.out.println("d11 = " + d11.toString());
+        System.out.println("d11 = " + d11.toString());*/
+        System.out.println("d01 = " + d01.toString());
+        System.out.println("d02 = " + d02.toString());
+        System.out.println("d03 = " + d03.toString());
+
+        System.out.println("d07 = " + d07.toString());
+
     }
 }
