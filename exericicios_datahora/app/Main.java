@@ -10,6 +10,7 @@ public class Main {
         exercicio2();
         exercicio3();
         exercicio4();
+        exercicio5();
     }
 
     // ---------------------------------------------------------------
@@ -72,5 +73,13 @@ public class Main {
 
         System.out.println("data e hora formatada: " + fmt.format(d01));
 
+    }
+
+    static void exercicio5() {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");   
+
+        LocalDate d01 = LocalDate.parse("09/01/2026", fmt);
+
+        System.out.println("data: " + d01);
     }
 }
