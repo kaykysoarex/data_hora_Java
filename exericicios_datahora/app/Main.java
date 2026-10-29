@@ -1,45 +1,65 @@
-package exericicios_datahora.app;
-
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import java.time.format.DateTimeFormatter;
 
 public class Main {
 
     public static void main(String[] args) {
+        exercicio1();
+        exercicio2();
+        exercicio3();
+    }
 
-        /*  DateTimeFormatter fmt1 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    // ---------------------------------------------------------------
+    // EXERCÍCIO 1: criar a mesma data com parse e com of
+    // ---------------------------------------------------------------
+    static void exercicio1() {
+        LocalDate d01 = LocalDate.parse("2026-01-09");     // parse: eu entrego um TEXTO
+        LocalDate d02 = LocalDate.of(2026, 1, 9);          // of: eu entrego NÚMEROS (ano, mês, dia, sem zero à esquerda)
 
-        LocalDate d01 = LocalDate.parse("2026-09-12");
+        System.out.println("Parse: " + d01);               // 2026-01-09
+        System.out.println("Of: " + d02);                  // 2026-01-09
 
-        System.out.println("Data formatada: " + fmt1.format(d01)); */
-        //-----------------------------------------------------------
-        /*   DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        // ATENÇÃO: d02.equals(d02) compara o objeto com ELE MESMO, então é sempre true.
+        // O certo é comparar um com o outro:
+        System.out.println("Equals: " + d01.equals(d02));  // true
 
-        LocalDateTime dt = LocalDateTime.parse("28/10/2026 18:45", fmt);
+        // Por que true? São dois objetos separados, mas o equals compara o CONTEÚDO
+        // (mesmo ano, mês e dia). Por isso parse e of dão o mesmo resultado.
+    }
 
-        System.out.println(dt); */    // 2026-10-28T18:45
-        //----------------------------------------------------------
-        /* DateTimeFormatter fmtEntrada = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
-        DateTimeFormatter fmtSaida = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    // ---------------------------------------------------------------
+    // EXERCÍCIO 2: LocalDateTime e os segundos que não aparecem
+    // ---------------------------------------------------------------
+    static void exercicio2() {
+        LocalDateTime d01 = LocalDateTime.parse("2026-01-09T07:05");
 
-        LocalDateTime d01 = LocalDateTime.parse("2026/10/28 18:45", fmtEntrada);
+        System.out.println("Data e hora: " + d01);         // 2026-01-09T07:05
 
-        System.out.println(fmtSaida.format(d01));   */  // 28/10/2026
-//-------------------------------------------------------------
+        // Por que não aparecem os segundos? Porque eu passei só horas e minutos.
+        // Mesmo escrevendo "2026-01-09T07:05:00", o toString() do LocalDateTime
+        // OMITE os segundos quando são zero. Só aparecem se forem diferentes de zero:
+        LocalDateTime d02 = LocalDateTime.parse("2026-01-09T07:05:30");
+        System.out.println("Com segundos: " + d02);        // 2026-01-09T07:05:30
+    }
 
-/* LocalDate d01 = LocalDate.parse("2026-01-09");
-LocalDate d02 = LocalDate.of(2026, 1, 9);
+    // ---------------------------------------------------------------
+    // EXERCÍCIO 3: formatar com yyyy e com yy
+    // ---------------------------------------------------------------
+    static void exercicio3() {
+        DateTimeFormatter fmt1 = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter fmt2 = DateTimeFormatter.ofPattern("dd-MM-yy");   // o enunciado pedia traços
 
-System.out.println("Parse: " + d01);
-System.out.println("Of: " + d02.equals(d02)); */
-//aparece true, pq?
-//------------------------------------------------------------
+        LocalDate d01 = LocalDate.parse("2026-01-09");
 
-LocalDateTime d01 = LocalDateTime.parse("2026-01-09T07:05");
+        System.out.println("data: " + fmt1.format(d01));   // 09/01/2026
+        System.out.println("data: " + fmt2.format(d01));   // 09-01-26
 
-System.out.println("Data e hora: " + d01);
-//pq eu passei apenas horas e minutos como argumento
-
-
-}
-
+        // yyyy = ano completo (2026)
+        // yy   = só os DOIS ÚLTIMOS dígitos do ano (26)
+        // Ao LER um texto com yy, o Java assume o século 2000 ("26" vira 2026).
+        //
+        // O molde só muda a SAÍDA de texto. O objeto d01 continua guardando 2026-01-09.
+    }
 }
