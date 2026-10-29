@@ -11,6 +11,7 @@ public class Main {
         exercicio3();
         exercicio4();
         exercicio5();
+        exercicio6();
     }
 
     // ---------------------------------------------------------------
@@ -76,10 +77,18 @@ public class Main {
     }
 
     static void exercicio5() {
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");   
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         LocalDate d01 = LocalDate.parse("09/01/2026", fmt);
 
         System.out.println("data: " + d01);
+    }
+
+    static void exercicio6() {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        LocalDateTime d01 = LocalDateTime.parse("2026-01-09 07:05", fmt);
+
+        System.out.println("data e hora: " + d01);
     }
 }
