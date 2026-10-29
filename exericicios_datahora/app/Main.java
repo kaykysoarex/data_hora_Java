@@ -1,7 +1,6 @@
 package exericicios_datahora.app;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDate;
 
 public class Main {
 
@@ -19,14 +18,22 @@ public class Main {
 
         System.out.println(dt); */    // 2026-10-28T18:45
         //----------------------------------------------------------
-        
-        DateTimeFormatter fmtEntrada = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
+        /* DateTimeFormatter fmtEntrada = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
         DateTimeFormatter fmtSaida = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         LocalDateTime d01 = LocalDateTime.parse("2026/10/28 18:45", fmtEntrada);
 
-        System.out.println(fmtSaida.format(d01));    // 28/10/2026
+        System.out.println(fmtSaida.format(d01));   */  // 28/10/2026
+//-------------------------------------------------------------
 
-    }
+LocalDate d01 = LocalDate.parse("2026-01-09");
+LocalDate d02 = LocalDate.of(2026, 1, 9);
+
+System.out.println("Parse: " + d01);
+System.out.println("Of: " + d02.equals(d02));
+//aparece true, pq?
+
+
+}
 
 }
