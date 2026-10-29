@@ -1,6 +1,8 @@
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 public class Main {
@@ -12,6 +14,7 @@ public class Main {
         exercicio4();
         exercicio5();
         exercicio6();
+        exercicio7();
     }
 
     // ---------------------------------------------------------------
@@ -90,5 +93,13 @@ public class Main {
         LocalDateTime d01 = LocalDateTime.parse("2026-01-09 07:05", fmt);
 
         System.out.println("data e hora: " + d01);
+    }
+    static void exercicio7(){
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").withZone(ZoneId.systemDefault());
+
+
+        Instant d01 = Instant.parse("2026-10-29T18:38:30Z");
+
+        System.out.println("data hora com fuso: " + fmt.format(d01));
     }
 }
