@@ -1,6 +1,6 @@
 package exericicios_datahora.app;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Main {
 
@@ -26,12 +26,18 @@ public class Main {
         System.out.println(fmtSaida.format(d01));   */  // 28/10/2026
 //-------------------------------------------------------------
 
-LocalDate d01 = LocalDate.parse("2026-01-09");
+/* LocalDate d01 = LocalDate.parse("2026-01-09");
 LocalDate d02 = LocalDate.of(2026, 1, 9);
 
 System.out.println("Parse: " + d01);
-System.out.println("Of: " + d02.equals(d02));
+System.out.println("Of: " + d02.equals(d02)); */
 //aparece true, pq?
+//------------------------------------------------------------
+
+LocalDateTime d01 = LocalDateTime.parse("2026-01-09T07:05");
+
+System.out.println("Data e hora: " + d01);
+//pq eu passei apenas horas e minutos como argumento
 
 
 }
