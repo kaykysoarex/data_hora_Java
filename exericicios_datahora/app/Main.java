@@ -1,6 +1,6 @@
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import java.time.format.DateTimeFormatter;
 
 public class Main {
@@ -9,6 +9,7 @@ public class Main {
         exercicio1();
         exercicio2();
         exercicio3();
+        exercicio4();
     }
 
     // ---------------------------------------------------------------
@@ -61,5 +62,15 @@ public class Main {
         // Ao LER um texto com yy, o Java assume o século 2000 ("26" vira 2026).
         //
         // O molde só muda a SAÍDA de texto. O objeto d01 continua guardando 2026-01-09.
+    }
+
+    static void exercicio4() {
+
+        LocalDateTime d01 = LocalDateTime.parse("2026-01-09T07:05");
+
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm - dd/MM/yyyy");
+
+        System.out.println("data e hora formatada: " + fmt.format(d01));
+
     }
 }
