@@ -94,9 +94,9 @@ public class Main {
 
         System.out.println("data e hora: " + d01);
     }
-    static void exercicio7(){
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").withZone(ZoneId.systemDefault());
 
+    static void exercicio7() {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm").withZone(ZoneId.systemDefault());
 
         Instant d01 = Instant.parse("2026-10-29T18:38:30Z");
 
